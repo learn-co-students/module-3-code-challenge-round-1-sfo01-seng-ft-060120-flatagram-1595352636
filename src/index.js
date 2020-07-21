@@ -6,6 +6,7 @@ const fetchDogData = () => {
     .then(json => buildDogCard(json))
 }
 
+
 const buildDogCard = (dog) => {
     let card = document.getElementsByClassName('image-card')[0]
     card.innerHTML = `
@@ -30,6 +31,9 @@ const buildDogCard = (dog) => {
 
     let likeButton = document.querySelector('button.like-button')
     likeButton.addEventListener('click', () => addLikes(dog))
+
+    let commentForm = document.querySelector('form')
+    commentForm.addEventListener('submit', (e) => addAComment(e))
 }
 
 // fetch comments
@@ -53,7 +57,7 @@ const addLikes = (dog) => {
         likes: dog.likes
     }
 
-    fetch(`http://localhost:3000/images/1`, {
+    fetch(`document.querySelector('button.comment-button')/1`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -66,6 +70,29 @@ const addLikes = (dog) => {
         let likeCount = document.querySelector('span')
         likeCount.textContent = `${json.likes} likes` 
     })
+}
+
+// add a comment
+const addAComment = (e) => {
+    e.preventDefault()
+
+    let commentData = {
+        imageId: 1,
+        content: e.target[0].value
+    }
+
+    fetch('http://localhost:3000/comments', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(commentData)        
+    })
+    .then(res => res.json())
+    .then(json => buildOneComment(json))
+
+    document.querySelector('form').reset()
 }
 
 // method calls
