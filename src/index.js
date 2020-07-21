@@ -15,6 +15,7 @@ const buildDogCard = (dog) => {
         <div class="likes-section">
             <span class="likes">${dog.likes} likes</span>
             <button class="like-button">♥</button>
+            <button class="dislike-button">⬇</button>
         </div>
         <ul class="comments"> </ul>
         <form class="comment-form">
@@ -31,6 +32,9 @@ const buildDogCard = (dog) => {
 
     let likeButton = document.querySelector('button.like-button')
     likeButton.addEventListener('click', () => addLikes(dog))
+
+    let dislikeButton = document.querySelector('button.dislike-button')
+    dislikeButton.addEventListener('click', () => removeLikes(dog))
 
     let commentForm = document.querySelector('form')
     commentForm.addEventListener('submit', (e) => addAComment(e))
@@ -57,7 +61,7 @@ const addLikes = (dog) => {
         likes: dog.likes
     }
 
-    fetch(`document.querySelector('button.comment-button')/1`, {
+    fetch(`http://localhost:3000/images/1`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -93,6 +97,28 @@ const addAComment = (e) => {
     .then(json => buildOneComment(json))
 
     document.querySelector('form').reset()
+}
+
+// dislike button
+const removeLikes = (dog) => {
+    dog.likes -= 1
+    let dogData = {
+        likes: dog.likes
+    }
+
+    fetch(`http://localhost:3000/images/1`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(dogData)
+    })
+    .then(res => res.json())
+    .then(json => {
+        let likeCount = document.querySelector('span')
+        likeCount.textContent = `${json.likes} likes` 
+    })
 }
 
 // method calls

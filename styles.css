@@ -123,3 +123,12 @@ body {
 .comment-button:focus {
   outline: none;
 }
+
+.dislike-button {
+  color: black;
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  transition: color 300ms;
+  cursor: pointer;
+}
