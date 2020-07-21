@@ -5,6 +5,42 @@
       "title": "Woofing those bugs away",
       "likes": 0,
       "image": "./assets/coder-dog.png"
+    },
+    {
+      "comment": "test",
+      "id": 2
+    },
+    {
+      "comment": "123",
+      "id": 3
+    },
+    {
+      "comment": "test",
+      "id": 4
+    },
+    {
+      "comment": "test",
+      "id": 5
+    },
+    {
+      "comment": "test",
+      "id": 6
+    },
+    {
+      "comment": "test",
+      "id": 7
+    },
+    {
+      "comment": "test",
+      "id": 8
+    },
+    {
+      "comment": "123",
+      "id": 9
+    },
+    {
+      "comment": "e",
+      "id": 10
     }
   ],
   "comments": [
