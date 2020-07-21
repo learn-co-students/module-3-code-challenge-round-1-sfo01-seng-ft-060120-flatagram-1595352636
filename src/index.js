@@ -45,3 +45,23 @@ function incrementLikes(e, image) {
     })
   }
   
+  const clickAddComment = (image) => {
+    let commentContainer = document.querySelector = "comment-button" 
+    commentContainer.addEventListener('click', (e)=> addComment(image.comment))
+   }
+
+  const addComment(image) {
+    e.preventDefault()
+    let comments = document.querySelector('comments')
+    comments.innerHTML = '' 
+
+    fetch(`http://localhost:3000/images/${image.id}`, {
+      method: 'POST',
+      headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+
+// something something, i'll do better on the next challenge... :} 
+  })
+} 
