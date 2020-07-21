@@ -50,7 +50,14 @@ const fetchAllComments = () => {
 const buildOneComment = (comment) => {
     let commentUl = document.querySelector('ul')
     let commentLi = document.createElement('li')
+    commentLi.id = `comment-${comment.id}`
     commentLi.textContent = comment.content
+
+    let deleteCommentButton = document.createElement('button')
+    deleteCommentButton.textContent = 'x'
+    deleteCommentButton.addEventListener('click', () => deleteComment(comment))
+    commentLi.appendChild(deleteCommentButton)
+
     commentUl.appendChild(commentLi)
 }
 
@@ -119,6 +126,18 @@ const removeLikes = (dog) => {
         let likeCount = document.querySelector('span')
         likeCount.textContent = `${json.likes} likes` 
     })
+}
+
+// delete comment
+const deleteComment = (comment) => {
+    fetch(`http://localhost:3000/comments/${comment.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+    })
+    .then(document.getElementById(`comment-${comment.id}`).remove())
 }
 
 // method calls
