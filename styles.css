@@ -132,3 +132,11 @@ body {
   transition: color 300ms;
   cursor: pointer;
 }
+
+.delete-comment {
+  font-size: 1rem;
+  border: none;
+  background: none;
+  transition: color 300ms;
+  cursor: pointer;
+}

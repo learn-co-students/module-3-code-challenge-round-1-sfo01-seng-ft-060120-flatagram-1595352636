@@ -1,11 +1,11 @@
 // write your code here
-// fetch image data
+
+// fetch dog data
 const fetchDogData = () => {
     fetch(`http://localhost:3000/images/1`)
     .then(res => res.json())
     .then(json => buildDogCard(json))
 }
-
 
 const buildDogCard = (dog) => {
     let card = document.getElementsByClassName('image-card')[0]
@@ -14,8 +14,10 @@ const buildDogCard = (dog) => {
         <img src="${dog.image}" class="image" />
         <div class="likes-section">
             <span class="likes">${dog.likes} likes</span>
-            <button class="like-button">♥</button>
-            <button class="dislike-button">⬇</button>
+                <div>
+                    <button class="like-button">❤️</button>
+                    <button class="dislike-button">💔</button>
+                </div>
         </div>
         <ul class="comments"> </ul>
         <form class="comment-form">
@@ -31,10 +33,20 @@ const buildDogCard = (dog) => {
     fetchAllComments()
 
     let likeButton = document.querySelector('button.like-button')
-    likeButton.addEventListener('click', () => addLikes(dog))
+    likeButton.addEventListener('click', () => {
+        let dogData = {
+            likes: dog.likes += 1
+        }
+        alterDogLikes(dogData)
+    })
 
     let dislikeButton = document.querySelector('button.dislike-button')
-    dislikeButton.addEventListener('click', () => removeLikes(dog))
+    dislikeButton.addEventListener('click', () => {
+        let dogData = {
+            likes: (dog.likes -= 1)
+        }
+        alterDogLikes(dogData)
+    })
 
     let commentForm = document.querySelector('form')
     commentForm.addEventListener('submit', (e) => addAComment(e))
@@ -51,36 +63,14 @@ const buildOneComment = (comment) => {
     let commentUl = document.querySelector('ul')
     let commentLi = document.createElement('li')
     commentLi.id = `comment-${comment.id}`
-    commentLi.textContent = comment.content
-
-    let deleteCommentButton = document.createElement('button')
-    deleteCommentButton.textContent = 'x'
+    commentLi.innerHTML = `
+        ${comment.content}
+        <button class='delete-comment'>❎</button>
+    `
+    let deleteCommentButton = commentLi.querySelector('button')
     deleteCommentButton.addEventListener('click', () => deleteComment(comment))
-    commentLi.appendChild(deleteCommentButton)
 
     commentUl.appendChild(commentLi)
-}
-
-// like button
-const addLikes = (dog) => {
-    dog.likes += 1
-    let dogData = {
-        likes: dog.likes
-    }
-
-    fetch(`http://localhost:3000/images/1`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(dogData)
-    })
-    .then(res => res.json())
-    .then(json => {
-        let likeCount = document.querySelector('span')
-        likeCount.textContent = `${json.likes} likes` 
-    })
 }
 
 // add a comment
@@ -106,13 +96,20 @@ const addAComment = (e) => {
     document.querySelector('form').reset()
 }
 
-// dislike button
-const removeLikes = (dog) => {
-    dog.likes -= 1
-    let dogData = {
-        likes: dog.likes
-    }
+// delete comment
+const deleteComment = (comment) => {
+    fetch(`http://localhost:3000/comments/${comment.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+    })
+    .then(document.getElementById(`comment-${comment.id}`).remove())
+}
 
+// alter dog likes
+const alterDogLikes = (dogData) => {
     fetch(`http://localhost:3000/images/1`, {
         method: 'PATCH',
         headers: {
@@ -126,18 +123,6 @@ const removeLikes = (dog) => {
         let likeCount = document.querySelector('span')
         likeCount.textContent = `${json.likes} likes` 
     })
-}
-
-// delete comment
-const deleteComment = (comment) => {
-    fetch(`http://localhost:3000/comments/${comment.id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-    })
-    .then(document.getElementById(`comment-${comment.id}`).remove())
 }
 
 // method calls
