@@ -49,10 +49,23 @@ const buildOneComment = (comment) => {
 // like button
 const addLikes = (dog) => {
     dog.likes += 1
-    console.log(dog.likes)
     let dogData = {
         likes: dog.likes
     }
+
+    fetch(`http://localhost:3000/images/1`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(dogData)
+    })
+    .then(res => res.json())
+    .then(json => {
+        let likeCount = document.querySelector('span')
+        likeCount.textContent = `${json.likes} likes` 
+    })
 }
 
 // method calls
